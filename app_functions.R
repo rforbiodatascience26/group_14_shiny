@@ -29,6 +29,16 @@ gene_dna <- function(
 
 # Virtual RNA polymerase
 transcribe_dna <- function(dna) {
+  if (is.null(dna) || length(dna) != 1 || is.na(dna)) {
+    stop("Please provide one DNA sequence.")
+  }
+  
+  dna <- toupper(trimws(dna))
+  
+  if (!grepl("^[ATCG]*$", dna)) {
+    stop("Invalid DNA sequence. Only A, T, C and G are allowed.")
+  }
+  
   rna <- gsub(
     pattern = "T",
     replacement = "U",
