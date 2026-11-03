@@ -7,7 +7,7 @@ gene_dna <- function(
     stop("The number of bases must be divisible by 3.")
   }
   
-  if (sum(base_probs) != 1) {
+  if (!isTRUE(all.equal(sum(base_probs), 1))) {
     stop("The base probabilities must sum to 1.")
   }
   
