@@ -11,6 +11,10 @@ gene_dna <- function(
     stop("The base probabilities must sum to 1.")
   }
   
+  if (length(base_probs) != 4 || any(base_probs < 0)) {
+    stop("'base_probs' must contain 4 non-negative values.")
+  }
+  
   dna_vector <- sample(
     x = c("A", "T", "C", "G"),
     size = length,
