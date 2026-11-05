@@ -54,13 +54,31 @@ transcribe_dna <- function(dna) {
 
 
 # Virtual Ribosome
+# Virtual Ribosome
 translate_rna <- function(rna) {
-  if (is.null(rna) || rna == "") {
+  
+  # Check that an RNA sequence is provided
+  if (is.null(rna) || length(rna) != 1 || is.na(rna) || rna == "") {
     return("")
   }
   
-  l <- nchar(x = rna)
+  # Standardize RNA sequence
+  rna <- toupper(trimws(rna))
   
+  # Check that only valid RNA bases are present
+  if (!grepl("^[AUCG]+$", rna)) {
+    stop("Invalid RNA sequence. Only A, U, C and G are allowed.")
+  }
+  
+  # Check that the sequence length is divisible by 3
+  if (nchar(rna) %% 3 != 0) {
+    stop("RNA sequence length must be divisible by 3.")
+  }
+  
+  # Calculate sequence length
+  l <- nchar(rna)
+  
+  # Define codon positions
   firsts <- seq(
     from = 1,
     to = l,
@@ -73,12 +91,14 @@ translate_rna <- function(rna) {
     by = 3
   )
   
+  # Split RNA sequence into codons
   codons <- substring(
     text = rna,
     first = firsts,
     last = lasts
   )
   
+  # Define the genetic code
   codon_table <- c(
     "UUU" = "F", "UCU" = "S", "UAU" = "Y", "UGU" = "C",
     "UUC" = "F", "UCC" = "S", "UAC" = "Y", "UGC" = "C",
@@ -98,6 +118,7 @@ translate_rna <- function(rna) {
     "GUG" = "V", "GCG" = "A", "GAG" = "E", "GGG" = "G"
   )
   
+  # Translate codons into amino acids
   protein <- paste0(
     x = codon_table[codons],
     collapse = ""
