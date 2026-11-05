@@ -1,5 +1,7 @@
 library("shiny")
 
+source("app_functions.R")
+
 server <- function(input, output) {
   
   output$dna <- renderText({
